@@ -32,7 +32,47 @@ db.connect((err) => {
   if (err) {
     console.log("Database connection error:", err);
   } else {
+
     console.log("MySQL Connected");
+
+    /* ---------- CREATE TABLES AUTOMATICALLY ---------- */
+
+    db.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255),
+        email VARCHAR(255) UNIQUE,
+        password VARCHAR(255)
+      )
+    `);
+
+    db.query(`
+      CREATE TABLE IF NOT EXISTS applicants (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT,
+        name VARCHAR(255)
+      )
+    `);
+
+    db.query(`
+      CREATE TABLE IF NOT EXISTS documents (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        applicant_id INT,
+        title VARCHAR(255)
+      )
+    `);
+
+    db.query(`
+      CREATE TABLE IF NOT EXISTS files (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        document_id INT,
+        file_name VARCHAR(255),
+        file_path VARCHAR(255)
+      )
+    `);
+
+    console.log("Tables ensured");
+
   }
 });
 
