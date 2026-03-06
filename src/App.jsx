@@ -7,6 +7,9 @@ import AddDocumentModal from "./components/AddDocumentModal";
 import LoginPage from "./pages/LoginPage";
 import "./styles/layout.css";
 
+/* BACKEND URL */
+const API_URL = "https://document-backend-f8bg.onrender.com";
+
 function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,7 +26,15 @@ function App() {
 
   /* ---------------- CHECK LOGIN ---------------- */
 
-  
+  useEffect(() => {
+
+    const user = localStorage.getItem("user");
+
+    if (user) {
+      setIsLoggedIn(true);
+    }
+
+  }, []);
 
   /* ---------------- LOAD APPLICANTS ---------------- */
 
@@ -40,7 +51,7 @@ function App() {
       try {
 
         const res = await fetch(
-          `http://localhost:5000/api/applicants/${user.id}`
+          `${API_URL}/api/applicants/${user.id}`
         );
 
         const data = await res.json();
@@ -80,7 +91,7 @@ function App() {
       try {
 
         const res = await fetch(
-          `http://localhost:5000/api/documents/${selectedApplicantId}`
+          `${API_URL}/api/documents/${selectedApplicantId}`
         );
 
         const docs = await res.json();
@@ -125,7 +136,7 @@ function App() {
     try {
 
       const res = await fetch(
-        "http://localhost:5000/api/applicants",
+        `${API_URL}/api/applicants`,
         {
           method: "POST",
           headers: {
@@ -169,7 +180,7 @@ function App() {
     try {
 
       await fetch(
-        `http://localhost:5000/api/applicants/${id}`,
+        `${API_URL}/api/applicants/${id}`,
         {
           method: "DELETE"
         }
@@ -202,7 +213,7 @@ function App() {
     try {
 
       const res = await fetch(
-        "http://localhost:5000/api/documents",
+        `${API_URL}/api/documents`,
         {
           method: "POST",
           headers: {
