@@ -95,7 +95,7 @@ function LoginPage({ onLogin }) {
       const token = credentialResponse.credential;
 
       const res = await fetch(
-        "http://localhost:5000/api/auth/google",
+        "http://localhost:5000/aphttps://document-backend-f8bg.onrender.comi/auth/googlehttps://document-backend-f8bg.onrender.com",
         {
           method: "POST",
           headers: {
