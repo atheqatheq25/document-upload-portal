@@ -4,7 +4,7 @@ const db = require("./db");
 
 const router = express.Router();
 
-/* ---------------- REGISTER ---------------- */
+/* ================= REGISTER ================= */
 
 router.post("/register", async (req, res) => {
 
@@ -19,9 +19,15 @@ message: "All fields are required"
 try {
 
 
-const checkSql = "SELECT * FROM users WHERE email = ?";
+const checkUser = "SELECT * FROM users WHERE email = ?";
 
-db.query(checkSql, [email], async (err, results) => {
+db.query(checkUser, [email], async (err, results) => {
+
+  if (err) {
+    return res.status(500).json({
+      message: "Database error"
+    });
+  }
 
   if (results.length > 0) {
     return res.status(400).json({
@@ -31,17 +37,17 @@ db.query(checkSql, [email], async (err, results) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const insertSql =
+  const insertUser =
     "INSERT INTO users (name,email,password) VALUES (?,?,?)";
 
   db.query(
-    insertSql,
+    insertUser,
     [name, email, hashedPassword],
     (err, result) => {
 
       if (err) {
         return res.status(500).json({
-          message: "Database error"
+          message: "Failed to create user"
         });
       }
 
@@ -67,7 +73,7 @@ res.status(500).json({
 
 });
 
-/* ---------------- LOGIN ---------------- */
+/* ================= LOGIN ================= */
 
 router.post("/login", (req, res) => {
 
